@@ -315,12 +315,12 @@ public class FormatLinksGUI extends javax.swing.JFrame {
           strOutput += "\">";
           strOutput += m2.group(1) + " Download Link</a></li>\n";
         } else {
-          strOutput += "<ol>\n<li><a href=\"" + line + "\">Streaming Link</a></li>\n";
+          strOutput += "<td>\n<ol>\n<li><a href=\"" + line + "\">Streaming Link</a></li>\n";
         }
       }
     }
 
-    strOutput += "</ol>\n</tr>\n";
+    strOutput += "</ol>\n</td>\n</tr>\n";
 
     jTPOutput.setText(strOutput);
 
@@ -341,13 +341,18 @@ public class FormatLinksGUI extends javax.swing.JFrame {
         String strContents = (String) contents.getTransferData(DataFlavor.stringFlavor);
         jTPInput.setText(strContents);
         
-        Pattern patDate = Pattern.compile("A recording of the lecture STATS [-9]{3} [0-9A-Z]+ was made on (20[0-9]{2})-(0[1-9]|1[0-2])-((0|1|2)[1-9]|3[0-1])");
+        Pattern patDate = Pattern.compile("(20[0-9]{2})-(0[1-9]|1[0-2])-((0|1|2)[1-9]|3[0-1])");
         Matcher m = patDate.matcher(strContents);
         
         bDateFromEmail = m.find();
         
         if(bDateFromEmail){
+          strYear = m.group(1);
+          strMonth = m.group(2);
+          strDay = m.group(3);
           
+          jcbMonth.setSelectedIndex(Integer.parseInt(strMonth) - 1);
+          jspinDay.setValue(Integer.parseInt(strDay));
         }
         
         jLabelMonth.setEnabled(!bDateFromEmail);
