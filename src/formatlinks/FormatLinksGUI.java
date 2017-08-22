@@ -297,9 +297,12 @@ public class FormatLinksGUI extends javax.swing.JFrame {
       nDay = dim[month - 1];
     
     String strDay = nDay.toString();
-    String strOutput = "<tr>\n<td>" + strMonth + " "  + strDay + "</td>\n";
-    strOutput += "<td>" + jcbLecture.getSelectedItem() + "</td>\n";
-
+    StringBuilder sbOutput = new StringBuilder();
+    
+    sbOutput.append("<tr style=\"text-align: left;\">\n");
+    sbOutput.append("<td valign = \"top\">" + jcbLecture.getSelectedItem() + "</td>\n");
+    sbOutput.append("<td valign = \"top\">" + strMonth + " "  + strDay + "</td>\n");
+    
     Pattern pat = Pattern.compile("https");
 
     for (String line : Lines) {
@@ -310,19 +313,20 @@ public class FormatLinksGUI extends javax.swing.JFrame {
         Matcher m2 = regDownload.matcher(line);
 
         if (m2.find()) {
-          strOutput += "<li><a href = \"";
-          strOutput += m2.group(2);
-          strOutput += "\">";
-          strOutput += m2.group(1) + " Download Link</a></li>\n";
+          sbOutput.append("<li><a href = \"");
+          sbOutput.append(m2.group(2));
+          sbOutput.append("\">");
+          sbOutput.append(m2.group(1));
+          sbOutput.append(" Download Link</a></li>\n");
         } else {
-          strOutput += "<td>\n<ol>\n<li><a href=\"" + line + "\">Streaming Link</a></li>\n";
+          sbOutput.append("<td valign = \"top\" style=\"text-align: left;\">\n<ol>\n<li><a href=\"").append(line).append("\">Streaming Link</a></li>\n");
         }
       }
     }
 
-    strOutput += "</ol>\n</td>\n</tr>\n";
+    sbOutput.append("</ol>\n</td>\n</tr>\n");
 
-    jTPOutput.setText(strOutput);
+    jTPOutput.setText(sbOutput.toString());
 
     strSource = "";
   }//GEN-LAST:event_jButtonFormatActionPerformed
